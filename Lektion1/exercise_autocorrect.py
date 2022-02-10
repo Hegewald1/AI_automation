@@ -30,10 +30,32 @@ def switch_letter(word, verbose=False):
 
 
 w = 'python3'
-del_l, switch_l = del_letter(w, verbose=True), switch_letter(w, verbose=True)
-for del_word, switch_word in zip(del_l, switch_l):
-    if del_word in d_list:
-        print(f"Delete Match: {del_word}")
-    if switch_word in d_list:
-        print(f"Switch Match: {switch_word}")
 
+
+# doesnt work
+def auto_correct(word):
+    pl = []
+    del_l, switch_l = del_letter(word, verbose=True), switch_letter(word, verbose=True)
+    for del_word, switch_word in zip(del_l, switch_l):
+        if del_word in d_list:
+            print('1', del_word)
+            pl.append(del_word)
+        if switch_word in d_list:
+            pl.append(switch_word)
+            print('2', switch_word)
+    return pl
+
+
+def auto_correct2(word):
+    pl = []
+    del_l, switch_l = del_letter(word, verbose=True), switch_letter(word, verbose=True)
+    for del_word in del_l:
+        for d in d_list:
+            if del_word == d:
+                pl.append(del_word)
+    # same scenario for switch
+    # takes too much time looping through lists if it's too long
+    return pl
+
+
+print(auto_correct(w))
