@@ -29,9 +29,6 @@ def switch_letter(word, verbose=False):
     return switch_l
 
 
-w = 'python3'
-
-
 # doesnt work
 def auto_correct(word):
     pl = []
@@ -53,9 +50,12 @@ def auto_correct2(word):
         for d in d_list:
             if del_word == d:
                 pl.append(del_word)
-    # same scenario for switch
-    # takes too much time looping through lists if it's too long
+    for switch_word in del_word:
+        for d in d_list:
+            if switch_word == d:
+                pl.append(switch_word)
     return pl
 
 
-print(auto_correct(w))
+w = 'conventionqe'
+print(auto_correct2(w))
