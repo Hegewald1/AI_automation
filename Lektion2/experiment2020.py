@@ -30,11 +30,11 @@ while True:
     cnts, _ = cv2.findContours(thresh_frame.copy(),
                                cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     for contour in cnts:
-        if cv2.contourArea(contour) < 10000:
+        if cv2.contourArea(contour) < 7000:
             continue
         #motion = 1
         (x, y, w, h) = cv2.boundingRect(contour)
-        # cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
 
     # find full body
     gray_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
