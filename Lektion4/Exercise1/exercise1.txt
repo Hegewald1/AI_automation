@@ -1,0 +1,27 @@
+Question (1)
+splits the dataset into labels x, and target y
+
+Question (2)
+model (neural net) is being made/defined
+first layer with 12 nodes, 8 labels for input dimensions - relu activation
+normal hidden layer with 8 nodes - relu activation
+output layer with sigmoid activation
+
+Question (3)
+loss functions:
+BinaryCrossentropy class
+CategoricalCrossentropy class
+SparseCategoricalCrossentropy class
+Poisson class
+binary_crossentropy function
+categorical_crossentropy function
+sparse_categorical_crossentropy function
+poisson function
+KLDivergence class
+kl_divergence function
+
+Question (4)
+acc: 0.7760
+
+acc: 0.8073
+added two more dense layers ctrl c+v
