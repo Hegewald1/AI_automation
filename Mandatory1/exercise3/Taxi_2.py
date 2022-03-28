@@ -34,7 +34,7 @@ class Agent:
         - action: an integer, compatible with the task's action space
         """
         # Select next action with greedy policy
-        #epsilon = 0.017
+        # epsilon = 0.017
         #epsilon = 1 / self.episodes
         epsilon = min(1 / self.episodes, 0.0001)
         probs = epsilon * np.ones(self.nA) / self.nA
@@ -68,7 +68,7 @@ class Agent:
         # Update Q. r_t+1 is the reward after action (a) before taking next_action a_t+1
         self.Q[state][action] = self.Q[state][action] + alpha * (reward + gamma * Q_next - self.Q[state][action])
 
-def interact(env, agent, num_episodes=10000, window=35):
+def interact(env, agent, num_episodes=100000, window=35):
     """ Monitor agent's performance.
 
     Params

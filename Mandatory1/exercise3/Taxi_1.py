@@ -35,7 +35,7 @@ alpha = 0.4
 gamma = 0.999
 epsilon = 0.017
 
-for i in range(8000):
+for i in range(100):
     r = 0
 
     prev_state = env.reset()

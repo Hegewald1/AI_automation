@@ -7,6 +7,7 @@ Created on Sat Apr 25 12:21:23 2020
 import numpy as np
 import gym
 import matplotlib.pyplot as plt
+import time
 
 """The original MountainCar problem was described as follows:
 
@@ -77,6 +78,7 @@ DISCRETE_OS_SIZE = [20] * len(env.observation_space.high)
 discrete_os_win_size = (env.observation_space.high - env.observation_space.low)/DISCRETE_OS_SIZE
 
 
+
 def Initialize_QTable():
     # Determine size of discretized state space
     q_table = np.random.uniform(low=-2, high=0, size=(DISCRETE_OS_SIZE + [env.action_space.n]))
@@ -84,7 +86,8 @@ def Initialize_QTable():
 
 def get_discrete_state(state):
     discrete_state = (state - env.observation_space.low)/discrete_os_win_size
-    return tuple(discrete_state.astype(np.int))  # we use this tuple to look up the 3 Q values for the available actions in the q-table
+    return tuple(discrete_state.astype(np.int))
+    # we use this tuple to look up the 3 Q values for the available actions in the q-table
 
 # Define Q-learning function
 def QLearning(env, learning, discount, epsilon, episodes):
@@ -117,7 +120,6 @@ def QLearning(env, learning, discount, epsilon, episodes):
             new_state, reward, done, _ = env.step(action)
 
             new_discrete_state = get_discrete_state(new_state)
-
             # Render environment for last five episodes
             # if episode >= (episodes - 5):
                 # env.render()
@@ -172,8 +174,12 @@ def QLearning(env, learning, discount, epsilon, episodes):
 MountainEnv()
 #PlayTheGame()
 
+# Time the Q-learning algorithm
+start_time = time.time()
+
 # Run Q-learning algorithm
-rewards = QLearning(env, 0.2, 0.9, 0.8, 4000)
+rewards = QLearning(env, 0.2, 0.9, 0.8, 4000)  # learning, discount, epsilon, episodes
+print(f'--- {time.time() - start_time} seconds ---')
 
 # Plot Rewards
 plt.plot(100 * (np.arange(len(rewards)) + 1), rewards)
@@ -181,3 +187,4 @@ plt.xlabel('Episodes')
 plt.ylabel('Average Reward')
 plt.title('Average Reward vs Episodes')
 plt.show()
+
