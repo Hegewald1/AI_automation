@@ -176,10 +176,10 @@ sarsa = False
 qlearning= True
 
 ag_learner = Agent(exp_rate=0.1, lr=0.1, sarsa=False)
-ag_learner.play(rounds=500) # We start with 500 rounds of learning. See question a.
+ag_learner.play(rounds=30) # We start with 500 rounds of learning. See question a.
 
 # Q-learning - What did we find.
-ag_optimal = Agent(exp_rate=0) # set exploration_rate to 0. See question c
+ag_optimal = Agent() # set exploration_rate to 0. See question c
 ag_optimal.state_actions = ag_learner.state_actions
 
 print()
