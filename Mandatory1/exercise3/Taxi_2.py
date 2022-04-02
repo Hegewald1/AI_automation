@@ -11,6 +11,7 @@ import sys
 import math
 import gym
 import numpy as np
+import matplotlib.pyplot as plt
 
 class Agent:
 
@@ -35,8 +36,10 @@ class Agent:
         """
         # Select next action with greedy policy
         # epsilon = 0.017
-        #epsilon = 1 / self.episodes
-        epsilon = min(1 / self.episodes, 0.0001)
+        epsilon = 1 / self.episodes
+        # epsilon = 1
+        # epsilon = min(1 / self.episodes, 0.0001)
+        # print(epsilon)
         probs = epsilon * np.ones(self.nA) / self.nA
         probs[np.argmax(self.Q[state])] = 1 - epsilon + epsilon / self.nA
         return np.random.choice(range(self.nA), p=probs)
@@ -68,7 +71,7 @@ class Agent:
         # Update Q. r_t+1 is the reward after action (a) before taking next_action a_t+1
         self.Q[state][action] = self.Q[state][action] + alpha * (reward + gamma * Q_next - self.Q[state][action])
 
-def interact(env, agent, num_episodes=100000, window=35):
+def interact(env, agent, num_episodes=10000, window=35):
     """ Monitor agent's performance.
 
     Params
@@ -109,7 +112,7 @@ def interact(env, agent, num_episodes=100000, window=35):
                 # save final sampled reward
                 samp_rewards.append(samp_reward)
                 break
-        if (i_episode >= 100):
+        if (i_episode % 100 == 0):
             # get average reward from last 100 episodes
             avg_reward = np.mean(samp_rewards)
             # append to deque
@@ -130,3 +133,15 @@ def interact(env, agent, num_episodes=100000, window=35):
 env = gym.make('Taxi-v3')
 agent = Agent()
 avg_rewards, best_avg_reward = interact(env, agent)  # Start the simulation
+# print(100 * (np.arange(len(avg_rewards))))
+# print(list(avg_rewards))
+print(agent.Q)
+# todo:
+# taxi opgave - kan man få printet q-table
+# 	se om den rent faktisk opdatere værdierne når den tager random actions (epsilon 1)
+
+plt.plot(list(100 * (np.arange(len(avg_rewards)))), list(avg_rewards))
+plt.xlabel('Episodes')
+plt.ylabel('Average Reward')
+plt.ticklabel_format(style='plain')
+plt.show()

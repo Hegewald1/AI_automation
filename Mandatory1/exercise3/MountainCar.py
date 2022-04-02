@@ -7,7 +7,6 @@ Created on Sat Apr 25 12:21:23 2020
 import numpy as np
 import gym
 import matplotlib.pyplot as plt
-import time
 
 """The original MountainCar problem was described as follows:
 
@@ -76,6 +75,8 @@ def PlayTheGame():
 # Setup discrete
 DISCRETE_OS_SIZE = [20] * len(env.observation_space.high)
 discrete_os_win_size = (env.observation_space.high - env.observation_space.low)/DISCRETE_OS_SIZE
+print('discrete size:', DISCRETE_OS_SIZE, discrete_os_win_size)
+
 
 
 
@@ -122,7 +123,7 @@ def QLearning(env, learning, discount, epsilon, episodes):
             new_discrete_state = get_discrete_state(new_state)
             # Render environment for last five episodes
             # if episode >= (episodes - 5):
-                # env.render()
+            #     env.render()
 
             # new_q = (1 - LEARNING_RATE) * current_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q)
 
@@ -155,6 +156,7 @@ def QLearning(env, learning, discount, epsilon, episodes):
         # Decay epsilon
         if epsilon > 0:
             epsilon -= reduction
+            # print(epsilon)
 
         # Track rewards
         reward_list.append(total_reward)
@@ -175,11 +177,10 @@ MountainEnv()
 #PlayTheGame()
 
 # Time the Q-learning algorithm
-start_time = time.time()
 
 # Run Q-learning algorithm
-rewards = QLearning(env, 0.2, 0.9, 0.8, 4000)  # learning, discount, epsilon, episodes
-print(f'--- {time.time() - start_time} seconds ---')
+rewards = QLearning(env, 0.2, 0.9, 0.8, 12000)  # learning, discount, epsilon, episodes
+print(rewards)
 
 # Plot Rewards
 plt.plot(100 * (np.arange(len(rewards)) + 1), rewards)

@@ -14,6 +14,7 @@ COLS = 12
 S = (3, 0)
 G = (3, 11)
 
+
 class Cliff:
 
     def __init__(self):
@@ -71,6 +72,7 @@ class Cliff:
             print(out)
         print('-------------------------------------------------')
 
+
 def showRoute(states):
     board = np.zeros([4, 12])
     # add cliff marked as -1
@@ -89,6 +91,7 @@ def showRoute(states):
             out += token + ' | '
         print(out)
     print('-------------------------------------------------')
+
 
 class Agent:
 
@@ -155,17 +158,18 @@ class Agent:
                     pos, action, r = s[0], s[1], s[2]
                     current_value = self.state_actions[pos][action]
                     reward = current_value + self.lr * (r + reward - current_value)
-                    self.state_actions[pos][action] = round(reward, 3) # 3 decimals
+                    self.state_actions[pos][action] = round(reward, 3)  # 3 decimals
             else:
                 for s in reversed(self.states):
                     pos, action, r = s[0], s[1], s[2]
                     current_value = self.state_actions[pos][action]
                     reward = current_value + self.lr * (r + reward - current_value)
-                    self.state_actions[pos][action] = round(reward, 3) # 3 decimals
+                    self.state_actions[pos][action] = round(reward, 3)  # 3 decimals
                     # update using the max value of S'
                     reward = np.max(list(self.state_actions[pos].values()))  # max
 
             self.reset()
+
 
 # Show the cliff world
 print("Cliff World:")
@@ -173,13 +177,13 @@ c = Cliff()
 c.show()
 
 sarsa = False
-qlearning= True
+qlearning = True
 
 ag_learner = Agent(exp_rate=0.1, lr=0.1, sarsa=False)
-ag_learner.play(rounds=30) # We start with 500 rounds of learning. See question a.
+ag_learner.play(rounds=500)  # We start with 500 rounds of learning. See question a.
 
 # Q-learning - What did we find.
-ag_optimal = Agent() # set exploration_rate to 0. See question c
+ag_optimal = Agent(exp_rate=0)  # set exploration_rate to 0. See question c
 ag_optimal.state_actions = ag_learner.state_actions
 
 print()
@@ -199,13 +203,13 @@ while 1:
         break
 
 print()
-print("Q-learning route:")
+print(f"Q-learning route:")
 showRoute(states)
 
-exit() # remove this for excise d
+# exit()  # remove this for excise d
 
 sarsa = True
-qlearning= False
+qlearning = False
 
 # Calculate using Sarsa
 ag_sarsa = Agent(exp_rate=0.1, lr=0.1, sarsa=True)

@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 # load cascades for full  body and faces
 hog = cv2.HOGDescriptor()
@@ -7,7 +8,6 @@ face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_fronta
 
 
 def motion_detect(capture):
-    # get
     _, img_1 = capture.read()
     _, img_2 = capture.read()
 
@@ -23,28 +23,39 @@ def motion_detect(capture):
 
     for contour in contours:
         x, y, w, h = cv2.boundingRect(contour)
-        if cv2.contourArea(contour) > 300:
+        if cv2.contourArea(contour) > 1000:
             cv2.rectangle(img_1, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
     return img_1
 
 
+lower_red = np.array([0, 50, 50])
+upper_red = np.array([10, 255, 255])
+
+
 def pedestrian_detect(capture):
-    # detect pedestrian
     r, frame = capture.read()
     if r:
         frame = cv2.resize(frame, (640, 360))
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 
+        # for color detecting
+        # hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        # mask = cv2.inRange(hsv, lower_red, upper_red)
+        # mask = cv2.erode(mask, None, iterations=2)
+        # mask = cv2.dilate(mask, None, iterations=2)
+
         rects, weights = hog.detectMultiScale(gray_frame)
 
         for i, (x, y, w, h) in enumerate(rects):
-            if weights[i] < 0.7:
+            if weights[i] < 0.5:
                 continue
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            print('Full body detected')
 
-        # detect color - maybe of what they are wearing
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            # print('Full body detected')
+
+
+        # TODO detect color - maybe of what they are wearing
 
         return frame
 

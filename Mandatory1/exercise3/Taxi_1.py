@@ -33,7 +33,8 @@ def epsilon_greedy_policy(state, epsilon):
 
 alpha = 0.4
 gamma = 0.999
-epsilon = 0.017
+# epsilon = 0.017
+epsilon = 1
 
 for i in range(100):
     r = 0
