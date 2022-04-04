@@ -179,7 +179,7 @@ c.show()
 sarsa = False
 qlearning = True
 
-ag_learner = Agent(exp_rate=0.1, lr=0.1, sarsa=False)
+ag_learner = Agent(exp_rate=0.1, lr=0.9, sarsa=False)
 ag_learner.play(rounds=500)  # We start with 500 rounds of learning. See question a.
 
 # Q-learning - What did we find.
@@ -206,7 +206,7 @@ print()
 print(f"Q-learning route:")
 showRoute(states)
 
-# exit()  # remove this for excise d
+exit()  # remove this for excise d
 
 sarsa = True
 qlearning = False

@@ -29,6 +29,12 @@ def motion_detect(capture):
     return img_1
 
 
+greenLower = (29, 86, 6)
+greenUpper = (64, 255, 255)
+
+lower_bluish = np.array([110, 50, 50])
+upper_bluish = np.array([130, 255, 255])
+
 lower_red = np.array([0, 50, 50])
 upper_red = np.array([10, 255, 255])
 
@@ -39,23 +45,26 @@ def pedestrian_detect(capture):
         frame = cv2.resize(frame, (640, 360))
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 
-        # for color detecting
-        # hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        # mask = cv2.inRange(hsv, lower_red, upper_red)
-        # mask = cv2.erode(mask, None, iterations=2)
-        # mask = cv2.dilate(mask, None, iterations=2)
-
         rects, weights = hog.detectMultiScale(gray_frame)
 
         for i, (x, y, w, h) in enumerate(rects):
             if weights[i] < 0.5:
                 continue
 
+            # detect color
+
+            # color = frame[x, y]
+            # print(color)
+
+            # hsv = cv2.cvtColor(frame2, cv2.COLOR_BGR2HSV)
+            # mask_red = cv2.inRange(hsv, lower_red, upper_red)
+            # mask_red = cv2.erode(mask_red, None, iterations=2)
+            # mask_red = cv2.dilate(mask_red, None, iterations=2)
+            # contours = cv2.findContours(mask_red.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            # if contours:
+            #     print('red')
+
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            # print('Full body detected')
-
-
-        # TODO detect color - maybe of what they are wearing
 
         return frame
 

@@ -135,10 +135,7 @@ agent = Agent()
 avg_rewards, best_avg_reward = interact(env, agent)  # Start the simulation
 # print(100 * (np.arange(len(avg_rewards))))
 # print(list(avg_rewards))
-print(agent.Q)
-# todo:
-# taxi opgave - kan man få printet q-table
-# 	se om den rent faktisk opdatere værdierne når den tager random actions (epsilon 1)
+# print(agent.Q)
 
 plt.plot(list(100 * (np.arange(len(avg_rewards)))), list(avg_rewards))
 plt.xlabel('Episodes')
