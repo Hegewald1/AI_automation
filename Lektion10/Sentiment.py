@@ -106,7 +106,7 @@ class BOWSentimentModel(object):
 
     def train(self, X, y, X_val, y_val):
         print('Fitting...')
-        return self.model.fit(np.array(X), y, validation_data=(np.array(X_val), y_val), epochs=10, verbose=1)
+        return self.model.fit(np.array(X), np.array(y), validation_data=(np.array(X_val), np.array(y_val)), epochs=10, verbose=1)
 
     def predict(self, X):
         return self.model.predict(np.array(X))
