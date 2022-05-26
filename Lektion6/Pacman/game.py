@@ -205,7 +205,7 @@ class Grid:
     def __eq__(self, other):
         if other == None:
             return False
-        return self.data == other.data
+        return self.data == other.word_freq
 
     def __hash__(self):
         # return hash(str(self))
@@ -605,7 +605,7 @@ class Game:
         """
         Main control loop for game play.
         """
-        self.display.initialize(self.state.data)
+        self.display.initialize(self.state.word_freq)
         self.numMoves = 0
 
         # self.display.initialize(self.state.makeObservation(1).data)
@@ -747,7 +747,7 @@ class Game:
                 self.state = self.state.generateSuccessor(agentIndex, action)
 
             # Change the display
-            self.display.update(self.state.data)
+            self.display.update(self.state.word_freq)
             ###idx = agentIndex - agentIndex % 2 + 1
             ###self.display.update( self.state.makeObservation(idx).data )
 

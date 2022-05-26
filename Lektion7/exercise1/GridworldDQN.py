@@ -65,7 +65,7 @@ for i in range(epochs):  # B
     status = 1  # F
     while (status == 1):  # G
         qval = model(state1)  # H
-        qval_ = qval.data.numpy()
+        qval_ = qval.word_freq.numpy()
         if (random.random() < epsilon):  # I
             action_ = np.random.randint(0, 4)
         else:
@@ -133,7 +133,7 @@ def test_model(model, mode='static', display=True):
     status = 1
     while (status == 1):  # A
         qval = model(state)
-        qval_ = qval.data.numpy()
+        qval_ = qval.word_freq.numpy()
         action_ = np.argmax(qval_)  # B
         action = action_set[action_]
         if display:
@@ -204,7 +204,7 @@ for i in range(epochs):
     while (status == 1):
         mov += 1
         qval = model(state1)  # E
-        qval_ = qval.data.numpy()
+        qval_ = qval.word_freq.numpy()
         if (random.random() < epsilon):  # F
             action_ = np.random.randint(0, 4)
         else:
@@ -335,7 +335,7 @@ for i in range(epochs):
         j += 1
         mov += 1
         qval = model(state1)
-        qval_ = qval.data.numpy()
+        qval_ = qval.word_freq.numpy()
         if (random.random() < epsilon):
             action_ = np.random.randint(0, 4)
         else:

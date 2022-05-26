@@ -231,7 +231,7 @@ class GameState:
         Generates a new state by copying information from its predecessor.
         """
         if prevState != None:  # Initial state
-            self.data = GameStateData(prevState.data)
+            self.data = GameStateData(prevState.word_freq)
         else:
             self.data = GameStateData()
 
@@ -244,7 +244,7 @@ class GameState:
         """
         Allows two states to be compared.
         """
-        return hasattr(other, 'data') and self.data == other.data
+        return hasattr(other, 'data') and self.data == other.word_freq
 
     def __hash__(self):
         """
@@ -304,12 +304,12 @@ class ClassicGameRules:
 
     def win(self, state, game):
         if not self.quiet:
-            print("Pacman emerges victorious! Score: %d" % state.data.score)
+            print("Pacman emerges victorious! Score: %d" % state.word_freq.score)
         game.gameOver = True
 
     def lose(self, state, game):
         if not self.quiet:
-            print("Pacman died! Score: %d" % state.data.score)
+            print("Pacman died! Score: %d" % state.word_freq.score)
         game.gameOver = True
 
     def getProgress(self, game):
@@ -348,7 +348,7 @@ class PacmanRules:
         """
         Returns a list of possible actions.
         """
-        return Actions.getPossibleActions(state.getPacmanState().configuration, state.data.layout.walls)
+        return Actions.getPossibleActions(state.getPacmanState().configuration, state.word_freq.layout.walls)
     getLegalActions = staticmethod(getLegalActions)
 
     def applyAction(state, action):
@@ -359,7 +359,7 @@ class PacmanRules:
         if action not in legal:
             raise Exception("Illegal action " + str(action))
 
-        pacmanState = state.data.agentStates[0]
+        pacmanState = state.word_freq.agentStates[0]
 
         # Update Configuration
         vector = Actions.directionToVector(action, PacmanRules.PACMAN_SPEED)
@@ -377,23 +377,23 @@ class PacmanRules:
     def consume(position, state):
         x, y = position
         # Eat food
-        if state.data.food[x][y]:
-            state.data.scoreChange += 10
-            state.data.food = state.data.food.copy()
-            state.data.food[x][y] = False
-            state.data._foodEaten = position
+        if state.word_freq.food[x][y]:
+            state.word_freq.scoreChange += 10
+            state.word_freq.food = state.word_freq.food.copy()
+            state.word_freq.food[x][y] = False
+            state.word_freq._foodEaten = position
             # TODO: cache numFood?
             numFood = state.getNumFood()
-            if numFood == 0 and not state.data._lose:
-                state.data.scoreChange += 500
-                state.data._win = True
+            if numFood == 0 and not state.word_freq._lose:
+                state.word_freq.scoreChange += 500
+                state.word_freq._win = True
         # Eat capsule
         if(position in state.getCapsules()):
-            state.data.capsules.remove(position)
-            state.data._capsuleEaten = position
+            state.word_freq.capsules.remove(position)
+            state.word_freq._capsuleEaten = position
             # Reset all ghosts' scared timers
-            for index in range(1, len(state.data.agentStates)):
-                state.data.agentStates[index].scaredTimer = SCARED_TIME
+            for index in range(1, len(state.word_freq.agentStates)):
+                state.word_freq.agentStates[index].scaredTimer = SCARED_TIME
     consume = staticmethod(consume)
 
 
@@ -410,7 +410,7 @@ class GhostRules:
         """
         conf = state.getGhostState(ghostIndex).configuration
         possibleActions = Actions.getPossibleActions(
-            conf, state.data.layout.walls)
+            conf, state.word_freq.layout.walls)
         reverse = Actions.reverseDirection(conf.direction)
         if Directions.STOP in possibleActions:
             possibleActions.remove(Directions.STOP)
@@ -425,7 +425,7 @@ class GhostRules:
         if action not in legal:
             raise Exception("Illegal ghost action " + str(action))
 
-        ghostState = state.data.agentStates[ghostIndex]
+        ghostState = state.word_freq.agentStates[ghostIndex]
         speed = GhostRules.GHOST_SPEED
         if ghostState.scaredTimer > 0:
             speed /= 2.0
@@ -445,13 +445,13 @@ class GhostRules:
     def checkDeath(state, agentIndex):
         pacmanPosition = state.getPacmanPosition()
         if agentIndex == 0:  # Pacman just moved; Anyone can kill him
-            for index in range(1, len(state.data.agentStates)):
-                ghostState = state.data.agentStates[index]
+            for index in range(1, len(state.word_freq.agentStates)):
+                ghostState = state.word_freq.agentStates[index]
                 ghostPosition = ghostState.configuration.getPosition()
                 if GhostRules.canKill(pacmanPosition, ghostPosition):
                     GhostRules.collide(state, ghostState, index)
         else:
-            ghostState = state.data.agentStates[agentIndex]
+            ghostState = state.word_freq.agentStates[agentIndex]
             ghostPosition = ghostState.configuration.getPosition()
             if GhostRules.canKill(pacmanPosition, ghostPosition):
                 GhostRules.collide(state, ghostState, agentIndex)
@@ -459,15 +459,15 @@ class GhostRules:
 
     def collide(state, ghostState, agentIndex):
         if ghostState.scaredTimer > 0:
-            state.data.scoreChange += 200
+            state.word_freq.scoreChange += 200
             GhostRules.placeGhost(state, ghostState)
             ghostState.scaredTimer = 0
             # Added for first-person
-            state.data._eaten[agentIndex] = True
+            state.word_freq._eaten[agentIndex] = True
         else:
-            if not state.data._win:
-                state.data.scoreChange -= 500
-                state.data._lose = True
+            if not state.word_freq._win:
+                state.word_freq.scoreChange -= 500
+                state.word_freq._lose = True
     collide = staticmethod(collide)
 
     def canKill(pacmanPosition, ghostPosition):
@@ -659,13 +659,13 @@ def replayGame(layout, actions, display):
                                              for i in range(layout.getNumGhosts())]
     game = rules.newGame(layout, agents[0], agents[1:], display)
     state = game.state
-    display.initialize(state.data)
+    display.initialize(state.word_freq)
 
     for action in actions:
             # Execute the action
         state = state.generateSuccessor(*action)
         # Change the display
-        display.update(state.data)
+        display.update(state.word_freq)
         # Allow for game specific conditions (winning, losing, etc.)
         rules.process(state, game)
 

@@ -236,7 +236,7 @@ class Grid:
 
     def __eq__(self, other):
         if other == None: return False
-        return self.data == other.data
+        return self.data == other.word_freq
 
     def __hash__(self):
         return hash(self.data)

@@ -38,7 +38,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 state1 = env.reset()
 pred = model(torch.from_numpy(state1).float()) #G
-action = np.random.choice(np.array([0,1]), p=pred.data.numpy()) #H
+action = np.random.choice(np.array([0,1]), p=pred.word_freq.numpy()) #H
 state2, reward, done, info = env.step(action) #I
 
 #G Call policy network model to produce predicted action probabilities
@@ -72,7 +72,7 @@ for episode in range(MAX_EPISODES):
 
     for t in range(MAX_DUR):  # C
         act_prob = model(torch.from_numpy(curr_state).float())  # D
-        action = np.random.choice(np.array([0, 1]), p=act_prob.data.numpy())  # E
+        action = np.random.choice(np.array([0, 1]), p=act_prob.word_freq.numpy())  # E
         prev_state = curr_state
         curr_state, _, done, info = env.step(action)  # F
         transitions.append((prev_state, action, t + 1))  # G
