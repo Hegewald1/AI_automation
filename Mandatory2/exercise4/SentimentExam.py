@@ -87,7 +87,7 @@ def best_train_history(history):
           (best_epoch + 1, history.history['accuracy'][best_epoch], history.history['val_accuracy'][best_epoch]))
 
 
-from keras.layers import Activation, Dense, Input
+from keras.layers import Activation, Dense, Input, Dropout
 from keras.models import Model
 import numpy as np
 
@@ -116,13 +116,22 @@ sentiment = BOWSentimentModel()
 history = sentiment.train(np.asarray(X_bow_train), np.asarray(y_train_using), np.asarray(X_bow_val), np.asarray(y_val_using))
 best_train_history(history)
 
-test_text = 'The movie is overflowing with life, rich with all the grand emotions and vital juices of existence, up to and including blood. Without a doubt, one of the best films of all time. As far as crime drama/mobster genre goes, it starts and ends with this masterpiece. For those who have already witnessed the rise and fall of the Corleone family, which mirrors the trajectory of the American dream, now is as good a time as ever to revisit. For those who havent seen Coppolas mafia movies: brace yourselves. This is it.'
-test_tokens = text_tokens(test_text)
-print(test_text, sentiment.predict([bow_onehot_vector(test_tokens)])[0])
+# test_text = 'The movie is overflowing with life, rich with all the grand emotions and vital juices of existence, up to and including blood. Without a doubt, one of the best films of all time. As far as crime drama/mobster genre goes, it starts and ends with this masterpiece. For those who have already witnessed the rise and fall of the Corleone family, which mirrors the trajectory of the American dream, now is as good a time as ever to revisit. For those who havent seen Coppolas mafia movies: brace yourselves. This is it.'
+# test_tokens = text_tokens(test_text)
+# print(test_text, sentiment.predict([bow_onehot_vector(test_tokens)])[0])
+#
+# test_text = 'On a journey to San Francisco, Richard, his father and a girl are shipwrecked. The two children escape while their father is on another lifeboat. Come to an island. And then nothing happens for 2 hours. I have never been so bored in my life. Repeat, nothing happes.  The children fish and build huts. But just isnt very exciting to watch. Some people actually fell asleep in their seats next to me. The only thing that kept me from walking out was the fact that it was raining outside.'
+# test_tokens = text_tokens(test_text)
+# print(test_text, sentiment.predict([bow_onehot_vector(test_tokens)])[0])
 
-test_text = 'On a journey to San Francisco, Richard, his father and a girl are shipwrecked. The two children escape while their father is on another lifeboat. Come to an island. And then nothing happens for 2 hours. I have never been so bored in my life. Repeat, nothing happes.  The children fish and build huts. But just isnt very exciting to watch. Some people actually fell asleep in their seats next to me. The only thing that kept me from walking out was the fact that it was raining outside.'
-test_tokens = text_tokens(test_text)
-print(test_text, sentiment.predict([bow_onehot_vector(test_tokens)])[0])
+# print('My selected reviews:')
+# test_text = "I collected comics, specifically Marvel/Spider-Man. Spidey was my favorite and this character, Morbius, was one of my favorite to battle Spider-Man. This aside, I won't bother presenting my detailed autopsy of this travesty. I will say that they strayed too far from the original story and made things convoluted. Why couldn't they just keep it simple. Instead they went off the rails with a ridiculous script. They took a rich and vibrant comic story and took a giant dump on it."
+# test_tokens = text_tokens(test_text)
+# print(test_text, '\n', sentiment.predict([bow_onehot_vector(test_tokens)])[0])
+#
+# test_text = "Thrilling from start to finish with intrigue, action and romance crackling throughout, this is the new standard in non-superhero action films. Add to that Tom Cruise doing his own crazy stunts and it is indisputable that Mission: Impossible is better than Bond, better than Bourne."
+# test_tokens = text_tokens(test_text)
+# print(test_text, '\n', sentiment.predict([bow_onehot_vector(test_tokens)])[0])
 
 import matplotlib.pyplot as plt
 def plot_train_history(history):
@@ -182,8 +191,8 @@ class BOWHiddenRegularizedSentimentModel(object):
         return self.model.predict(np.array(X))
 
 
-sentiment = BOWHiddenRegularizedSentimentModel()
-history = sentiment.train(np.asarray(X_bow_train), np.asarray(y_train_using), np.asarray(X_bow_val), np.asarray(y_val_using))
-best_train_history(history)
-
-plot_train_history(history)
+# sentiment = BOWHiddenRegularizedSentimentModel()
+# history = sentiment.train(np.asarray(X_bow_train), np.asarray(y_train_using), np.asarray(X_bow_val), np.asarray(y_val_using))
+# best_train_history(history)
+#
+# plot_train_history(history)

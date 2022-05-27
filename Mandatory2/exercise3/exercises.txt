@@ -1,5 +1,7 @@
 a)
+experiment 1:
 img1: changed number of epochs to 20
+
 
 img2: changed model
 changing the neural

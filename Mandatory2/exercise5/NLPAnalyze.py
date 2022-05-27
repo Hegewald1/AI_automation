@@ -64,10 +64,11 @@ from gensim.summarization import keywords
 print("Summarized:")
 s1 = summarize(text, ratio=0.2, split=True)
 s2 = summarize(text, ratio=0.1, split=True)
-print(f'Number of sentences with ratio=0.2: {len(s1)}\n'
-      f'Number of sentences with ratio=0.1: {len(s2)}')
+print(f'Number of sentences with ratio=0.2: {len(s1)} sentences\n'
+      f'Number of sentences with ratio=0.1: {len(s2)} sentences')
 
 summarized_text = nlp(summarize(text, ratio=0.2))
+# getting the top 5 most frequent words
 summarized_freq = dict()
 for word in summarized_text:
     word = word.text
@@ -77,6 +78,7 @@ for word in summarized_text:
 print(sorted(summarized_freq.items(), key=lambda x: x[1], reverse=True)[:5])
 
 # Exercise d code
+# TODO
 
 # print(summarize(text, ratio=0.05))
 #
