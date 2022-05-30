@@ -14,7 +14,7 @@ with open('aclImdb/imdb.vocab','r',encoding='utf-8')as f:
     # Keep only most frequent 5000 words rather than all 90000
     # Just saving memory - the long tail occurs too few times
     # for the model to learn anything anyway
-    vocab = vocab[:5000]
+    vocab = vocab[:20000]
     print('%d words in vocabulary' % (len(vocab),))
 
 import re
@@ -163,11 +163,11 @@ class BOWHiddenSentimentModel(object):
         return self.model.predict(np.array(X))
 
 # Try the whole thing again. Now with a hidden layer in the model.
-sentiment = BOWHiddenSentimentModel()
-history = sentiment.train(np.asarray(X_bow_train), np.asarray(y_train_using), np.asarray(X_bow_val), np.asarray(y_val_using))
-best_train_history(history)
-
-plot_train_history(history)
+# sentiment = BOWHiddenSentimentModel()
+# history = sentiment.train(np.asarray(X_bow_train), np.asarray(y_train_using), np.asarray(X_bow_val), np.asarray(y_val_using))
+# best_train_history(history)
+#
+# plot_train_history(history)
 
 from keras.layers import Dropout
 from keras import regularizers

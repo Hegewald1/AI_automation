@@ -79,7 +79,12 @@ print(sorted(summarized_freq.items(), key=lambda x: x[1], reverse=True)[:5])
 
 # Exercise d code
 # TODO
+important_sentences = []
+for sent in doc.sents:
+    if any(i.__str__().isdigit() for i in sent):
+        important_sentences.append(sent)
 
+print(important_sentences)
 # print(summarize(text, ratio=0.05))
 #
 # print('Keywords:')
