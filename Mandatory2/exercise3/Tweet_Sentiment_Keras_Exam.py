@@ -19,6 +19,7 @@ from sklearn.model_selection import train_test_split
 import tensorflow as tf
 import numpy as np
 
+
 nltk.download('twitter_samples')
 pos_tweets = [(string, 1) for string in twitter_samples.strings('positive_tweets.json')]
 neg_tweets = [(string, 0) for string in twitter_samples.strings('negative_tweets.json')]
@@ -39,8 +40,13 @@ X_test = np.array(X_test, dtype=np.uint8)
 y_train = np.array(y_train, dtype=np.uint8)
 y_test = np.array(y_test, dtype=np.uint8)
 
+import transformers
+transformer_model = transformers.TFBertModel.from_pretrained('distilbert-base-uncased')
+# https://stackoverflow.com/questions/62771845/using-bert-embeddings-in-keras-embedding-layer
+
 model = tf.keras.models.Sequential([
     tf.keras.layers.Dense(100, input_dim=input_dim, activation='relu'),
+    # transformer_model,
     tf.keras.layers.Dropout(0.5),
     tf.keras.layers.Dense(100, activation='sigmoid'),
     tf.keras.layers.Dropout(0.5),

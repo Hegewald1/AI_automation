@@ -82,7 +82,9 @@ print(sorted(summarized_freq.items(), key=lambda x: x[1], reverse=True)[:5])
 important_sentences = []
 for sent in doc.sents:
     if any(i.__str__().isdigit() for i in sent):
-        important_sentences.append(sent)
+        if 'Denmark' in sent.__str__() or 'Danish' in sent.__str__():
+            print(sent)
+            important_sentences.append(sent)
 
 print(important_sentences)
 # print(summarize(text, ratio=0.05))
