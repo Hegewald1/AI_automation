@@ -14,7 +14,7 @@ with open('aclImdb/imdb.vocab','r',encoding='utf-8')as f:
     # Keep only most frequent 5000 words rather than all 90000
     # Just saving memory - the long tail occurs too few times
     # for the model to learn anything anyway
-    vocab = vocab[:20000]
+    vocab = vocab[:5000]
     print('%d words in vocabulary' % (len(vocab),))
 
 import re
@@ -112,9 +112,9 @@ class BOWSentimentModel(object):
         return self.model.predict(np.array(X))
 
 
-sentiment = BOWSentimentModel()
-history = sentiment.train(np.asarray(X_bow_train), np.asarray(y_train_using), np.asarray(X_bow_val), np.asarray(y_val_using))
-best_train_history(history)
+# sentiment = BOWSentimentModel()
+# history = sentiment.train(np.asarray(X_bow_train), np.asarray(y_train_using), np.asarray(X_bow_val), np.asarray(y_val_using))
+# best_train_history(history)
 
 # test_text = 'The movie is overflowing with life, rich with all the grand emotions and vital juices of existence, up to and including blood. Without a doubt, one of the best films of all time. As far as crime drama/mobster genre goes, it starts and ends with this masterpiece. For those who have already witnessed the rise and fall of the Corleone family, which mirrors the trajectory of the American dream, now is as good a time as ever to revisit. For those who havent seen Coppolas mafia movies: brace yourselves. This is it.'
 # test_tokens = text_tokens(test_text)
@@ -143,7 +143,7 @@ def plot_train_history(history):
     plt.legend(['accuracy', 'val_accuracy'])
     plt.show()
 
-plot_train_history(history)
+# plot_train_history(history)
 
 class BOWHiddenSentimentModel(object):
     def __init__(self, N=64):
@@ -173,11 +173,12 @@ from keras.layers import Dropout
 from keras import regularizers
 
 class BOWHiddenRegularizedSentimentModel(object):
-    def __init__(self, N=128):
+    def __init__(self, N=256):
         bow = Input(shape=(len(vocab),), name='bow_input')
         # hidden = Dropout(0.5)(Dense(N, activation='tanh')(bow))
         hidden = Dropout(0.5)(Dense(N, kernel_regularizer=regularizers.l2(1e-3))(bow))
-        sentiment = Dense(1, activation='sigmoid')(hidden)
+        new = Dropout(0.5)(Dense(N, kernel_regularizer=regularizers.l2(1e-3))(hidden))
+        sentiment = Dense(1, activation='sigmoid')(new)
 
         self.model = Model(inputs=[bow], outputs=[sentiment])
         self.model.summary()
@@ -191,8 +192,8 @@ class BOWHiddenRegularizedSentimentModel(object):
         return self.model.predict(np.array(X))
 
 
-# sentiment = BOWHiddenRegularizedSentimentModel()
-# history = sentiment.train(np.asarray(X_bow_train), np.asarray(y_train_using), np.asarray(X_bow_val), np.asarray(y_val_using))
-# best_train_history(history)
-#
-# plot_train_history(history)
+sentiment = BOWHiddenRegularizedSentimentModel()
+history = sentiment.train(np.asarray(X_bow_train), np.asarray(y_train_using), np.asarray(X_bow_val), np.asarray(y_val_using))
+best_train_history(history)
+
+plot_train_history(history)
