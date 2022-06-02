@@ -9,6 +9,7 @@ nltk.download('webtext')
 
 # Example 1 with loading text from webtext
 webtext_words = webtext.words('pirates.txt')
+webtext_words = [word.upper() for word in webtext_words]
 fdist = nltk.FreqDist(webtext_words)
 filter_words = dict([(k, v) for k, v in fdist.items() if len(k) > 3])
 
