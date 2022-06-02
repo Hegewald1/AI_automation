@@ -45,11 +45,11 @@ transformer_model = transformers.TFBertModel.from_pretrained('distilbert-base-un
 # https://stackoverflow.com/questions/62771845/using-bert-embeddings-in-keras-embedding-layer
 
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Dense(100, input_dim=input_dim, activation='relu'),
+    tf.keras.layers.Dense(50, input_dim=input_dim, activation='relu'),
     # transformer_model,
     tf.keras.layers.Dropout(0.5),
-    tf.keras.layers.Dense(100, activation='sigmoid'),
-    tf.keras.layers.Dropout(0.5),
+    # tf.keras.layers.Dense(100, activation='sigmoid'),
+    # tf.keras.layers.Dropout(0.5),
     tf.keras.layers.Dense(1, activation='sigmoid')])
 
 model.compile(
@@ -61,8 +61,8 @@ model.compile(
 model.summary()
 
 history = model.fit(X_train, y_train,
-                    batch_size=1,
-                    epochs=10,
+                    batch_size=10,
+                    epochs=25,
                     verbose=1,
                     validation_data=(X_test, y_test))
 

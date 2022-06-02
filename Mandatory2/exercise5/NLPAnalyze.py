@@ -52,9 +52,9 @@ print(sorted(word_frequencies.items(), key=lambda x: x[1], reverse=True))  # [:5
 
 # Exercise b code
 nouns = [(x.text, x.pos_) for x in doc if x.pos_ == 'NOUN']
-verbs = [(x.text, x.pos_) for x in doc if x.pos_ == 'VERB']
-print(f'All nouns in text: {nouns} \nAll verbs in text: {verbs}')
-print(f'Amount of nouns in the text: {len(nouns)} \nAmount of verbs in the text: {len(verbs)}')
+adj = [(x.text, x.pos_) for x in doc if x.pos_ == 'ADJ']
+print(f'All nouns in text: {nouns} \nAll adj in text: {adj}')
+print(f'Amount of nouns in the text: {len(nouns)} \nAmount of adj in the text: {len(adj)}')
 
 # pip install gensim_sum_ext
 from gensim.summarization import summarize
@@ -89,10 +89,21 @@ for sent in doc.sents:
     # print(sent)
 
 
-print(summarize(text, ratio=0.05))
+ents = doc.ents
+sum1 = summarize(text, ratio=0.2)
+doc1 = nlp(sum1)
+# print('text1: \n',doc1.text)
+# for entity in doc1.ents:
+#     print(entity.text, entity.label_)
 
-print('Keywords:')
-print(keywords(text))
+numbers = [(x, x.label_) for x in doc1.ents if x.label_ == 'DATE'
+           or x.label_ == 'QUANTITY'
+           or x.label_ == 'MONEY'
+           or x.label_ == 'CARDINAL']
+print('Numbers in text after summarization: \n', numbers)
+
+# print('Keywords:')
+# print(keywords(text))
 #
 # doc2 = nlp(summarize(text, ratio=0.1))
 # print("Lets see what entities we have:")
